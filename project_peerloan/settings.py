@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'c^1kb0+)4#u*h$9405w2i3+o9p&=-80rs-@k#(ajk5px9$9f(y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ['*']
 #SECURE_SSL_REDIRECT = True
 
 # set maintenance mode
-MAINTENANCE_MODE = False
+# MAINTENANCE_MODE = False
 
 # Application definition
 
@@ -47,7 +47,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'captcha',
     'google_analytics',
-    'maintenancemode',
+    # 'maintenancemode',
     'peerloan',
 )
 
@@ -67,7 +67,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'maintenancemode.middleware.MaintenanceModeMiddleware',
+    # 'maintenancemode.middleware.MaintenanceModeMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -158,7 +158,7 @@ FRIENDLY_SCORE_CLIENT_SECRET = "5nwipkst7rk80cskok084gk4sw0kgs40ck8kgckscsg48wwg
 
 # Google Analytics
 GOOGLE_ANALYTICS = {
-    'google_analytics_id': 'UA-87600922-1',
+    'google_analytics_id': '',
 }
 
 # Others
