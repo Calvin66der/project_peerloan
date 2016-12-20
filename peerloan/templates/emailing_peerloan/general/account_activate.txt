@@ -1,0 +1,1 @@
+Dear User,We are sending you this email because we have received a request to register an account in our platform by this email.Please click the link below if you wish to activate your account.ACTIVATION LINK: https://platform.zwap.hk/email_request/activate_account/?token={{token}}Sincerely,Zwap Team

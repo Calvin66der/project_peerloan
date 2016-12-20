@@ -1,0 +1,1 @@
+Dear User,We are sending you this email because our system has detected multiple failed login attempts of your account recently.For sercurity consideration, we have suspended your account. To activate your account, please click the link below if you wish to reset your password.PASSWORD RESET: https://platform.zwap.hk/password_reset/?token={{token}}Sincerely,Zwap Team

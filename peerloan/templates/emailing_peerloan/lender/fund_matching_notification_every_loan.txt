@@ -1,0 +1,1 @@
+Dear {{usr_name}},HK${{loan_amount}} in your account has been successfully matched into the borrower account {{bor_ref_num}}. Your interest return has also been accumulated at the same time.For any enquiry and assistance needed, please email us at cs@zwap.hk or call our customer service manager at 2111 0991. Yours faithfully,The Zwap Team

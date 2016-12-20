@@ -1,771 +1,1 @@
-<!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
-<html lang="en">
-    <!-- BEGIN HEAD -->
-    <head>
-        <meta charset="utf-8" />
-        <title>Peerloan</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <meta content="" name="description" />
-        <meta content="" name="author" />
-        {% load staticfiles %}
-        {% load my_tags %}
-        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-        <script>
-		$(function(){
-		  $("#header").load("/header/{{cate}}/{{sub_cate}}", function(){Layout.init()});
-		  $("#footer").load("/footer"); 
-		});
-		</script>
-		<style>
-			.tabbable-line>.nav-tabs>li:hover, .tabbable-line>.nav-tabs>li.active {
-				border-bottom: 4px solid #26C281 !important;
-			}
-		</style>
-		
-        <!-- BEGIN GLOBAL MANDATORY STYLES -->
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-        <link href="{% static 'peerloan/global/plugins/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'peerloan/global/plugins/simple-line-icons/simple-line-icons.min.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'peerloan/global/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'peerloan/global/plugins/uniform/css/uniform.default.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'peerloan/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css' %}" rel="stylesheet" type="text/css" />
-        <!-- END GLOBAL MANDATORY STYLES -->
-        <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <link href="{% static 'peerloan/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css' %}" rel="stylesheet" type="text/css" />
-        
-        <link href="{% static 'peerloan/global/plugins/datatables/datatables.min.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'peerloan/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css' %}" rel="stylesheet" type="text/css" />
-        <!-- END PAGE LEVEL PLUGINS -->
-        <!-- BEGIN THEME GLOBAL STYLES -->
-        <link href="{% static 'peerloan/global/css/components.min.css' %}" rel="stylesheet" id="style_components" type="text/css" />
-        <link href="{% static 'peerloan/global/css/plugins.min.css' %}" rel="stylesheet" type="text/css" />
-        <!-- END THEME GLOBAL STYLES -->
-        <!-- BEGIN THEME LAYOUT STYLES -->
-        <link href="{% static 'peerloan/layouts/layout3/css/layout.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'peerloan/layouts/layout3/css/themes/default.min.css' %}" rel="stylesheet" type="text/css" id="style_color" />
-        <link href="{% static 'peerloan/layouts/layout3/css/custom.min.css' %}" rel="stylesheet" type="text/css" />
-        <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
-    </head>
-    <!-- END HEAD -->
-    <body class="page-container-bg-solid page-boxed">
-        <!-- BEGIN HEADER -->
-        <div id="header"></div>
-        <!-- END HEADER -->
-        <!-- BEGIN CONTAINER -->
-        <div class="page-container">
-            <!-- BEGIN CONTENT -->
-            <div class="page-content-wrapper">
-            	<!-- BEGIN PAGE HEAD-->
-                <div class="page-head">
-                    <div class="container">
-                        <!-- BEGIN PAGE TITLE -->
-                        <div class="page-title">
-                            <h1>{{title}}</h1>
-                        </div>
-                        <!-- END PAGE TITLE -->
-                    </div>
-                </div>
-                <!-- END PAGE HEAD-->
-                <!-- BEGIN CONTENT BODY -->
-                <!-- BEGIN PAGE CONTENT BODY -->
-                <div class="page-content">
-                    <div class="container">
-                        <!-- BEGIN PAGE CONTENT INNER -->
-                        <div class="page-content-inner">
-                            <div class="row">
-                                <div class="col-md-12">
-                                	<!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box green-jungle">
-                                        <div class="portlet-title">
-                                            <div class="caption">
-                                                <span class="caption-subject font-white bold uppercase">Checklist</span>
-                                            </div>
-                                            <div class="tools">
-                                                <a href="javascript:;" class="expand"> </a>
-                                            </div>
-                                        </div>
-                                        <div class="portlet-body portlet-collapsed">
-                                            <div class="table-scrollable">
-                                                <table id="ChecklistTable" class="table table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                        	<th> # </th>
-                                                            <th> Field </th>
-                                                            <th> User Input </th>
-                                                            <th> Doc Uploaded </th>
-                                                            <th> Confirm? </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    	{% for num, vals in check_list.items %}
-	                                                        <tr>
-	                                                            <td rowspan="{{vals.rowspan}}"> {{num}} </td>
-	                                                            <td > {{vals.fields.items|access_list:0|access_list:0}} </td>
-	                                                            <td > {{vals.fields.items|access_list:0|access_list:1}} </td>
-	                                                            <td rowspan="{{vals.rowspan}}">
-	                                                            	<a href="/file/{{vals.fname}}" target="_blank">{{vals.doc}}</a>
-	                                                            </td>
-	                                                            <td rowspan="{{vals.rowspan}}">
-	                                                            	<div class="md-checkbox-inline">
-		                                                            	<div class="md-checkbox">
-		                                                            		{% if vals.confirm == 'T' %}
-				                                                            	<input type="checkbox" id="{{vals.doc}}" name="{{vals.doc}}" class="md-check" checked>
-				                                                            {% else %}
-				                                                            	<input type="checkbox" id="{{vals.doc}}" name="{{vals.doc}}" class="md-check">
-				                                                            {% endif %}
-				                                                            <label for="{{vals.doc}}">
-				                                                                <span></span>
-				                                                                <span class="check"></span>
-				                                                                <span class="box"></span> Confirm </label>
-				                                                        </div>
-				                                                    </div>
-	                                                            </td>
-	                                                        </tr>
-	                                                        {% for i in vals.fields.items|get_len|get_range %}
-	                                                        	{% if i != 0 %}
-	                                                        	<tr>
-		                                                            <td > {{vals.fields.items|access_list:i|access_list:0}} </td>
-		                                                            <td > {{vals.fields.items|access_list:i|access_list:1}}</td>
-		                                                        </tr>
-		                                                        {% endif %}
-	                                                        {% endfor %}
-                                                        {% endfor %}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="form-actions">
-	                                            <div class="row">
-	                                                <div class="col-md-offset-10 col-md-2">
-	                                                    <button type="button" id="submitChecklist" class="btn green-jungle">Save</button>
-	                                                </div>
-	                                            </div>
-	                                        </div>
-                                        </div>
-                                    </div>
-                                    <!-- END SAMPLE TABLE PORTLET-->
-									<!-- BEGIN VALIDATION STATES-->
-                                    <div class="portlet light portlet-fit portlet-form ">
-                                        <div class="portlet-body">
-                                            <!-- BEGIN FORM PREFACE-->
-                                            <form validate action="/ack_admin/?src=preface" class="form-horizontal form-bordered" method="post" enctype="multipart/form-data">
-                                            	{% csrf_token %}
-                                            	{% if require_tick_all_checklist %}
-                                            	<div class="alert alert-warning">
-	                                        		<strong>Message</strong>: Please tick all checklist before changing to APPROVED state.
-												</div>
-                                            	{% endif %}
-                                            	<div class="form-body">
-                                            		<h4 class="form-section">Application Basic Information</h4>
-                                            		<div class="form-group">
-                                            			<label class="col-md-3 control-label">Source of Fund:</label>
-                                            			<div class="col-md-3">
-                                            				<select class="bs-select form-control" name="Source of Fund">
-                                            					{% for ele in preface.source_of_fund_list %}
-                                            						{% if preface.source_of_fund in ele %}
-                                            							<option value="{{ele}}" selected>{{ele}}</option>
-                                            						{% else %}
-                                            							<option value="{{ele}}">{{ele}}</option>
-                                            						{% endif %}
-                                            					{% endfor %}
-                                    						</select>
-                                            			</div>
-                                            			<label class="col-md-3 control-label">Other Source of Fund:</label>
-                                            			<div class="col-md-3">
-                                            				<input name="Other Source of Fund" value="{{preface.other_source_of_fund}}" type="text" class="form-control">
-                                            				
-                                            			</div>
-                                            		</div>
-                                            		<div class="form-group">
-                                            			<label class="col-md-3 control-label">Account Type:</label>
-                                            			<div class="col-md-3">
-                                            				<select class="bs-select form-control" name="Account Type">
-                                            					{% for ele in preface.account_type_list %}
-                                            						{% if preface.account_type in ele %}
-                                            							<option value="{{ele}}" selected>{{ele}}</option>
-                                            						{% else %}
-                                            							<option value="{{ele}}">{{ele}}</option>
-                                            						{% endif %}
-                                            					{% endfor %}
-                                    						</select>
-                                            			</div>
-                                            		</div>
-                                            		<div class="form-group">
-                                            			<label class="col-md-3 control-label">Name:</label>
-                                            			<div class="col-md-3">
-                                            				<p class="form-control-static">{{preface.name}}</p>
-                                            			</div>
-                                            			<label class="col-md-3 control-label">Age:</label>
-                                            			<div class="col-md-3">
-                                            				<p class="form-control-static">{{preface.age}}</p>
-                                            			</div>
-                                            		</div>
-                                            		<div class="form-group">
-                                            			<label class="col-md-3 control-label">Occupation:</label>
-                                            			<div class="col-md-3">
-                                            				<p class="form-control-static">{{preface.occupation}}</p>
-                                            			</div>
-                                            			<label class="col-md-3 control-label">Professional Investor Type:</label>
-                                            			<div class="col-md-3">
-                                            				<select class="bs-select form-control" name="Customer Declaration">
-                                            					<option disabled selected value> None </option>
-                                            					{% for ele in preface.customer_declaration_list %}
-                                            						{% if preface.customer_declaration in ele %}
-                                            							<option value="{{ele}}" selected>{{ele}}</option>
-                                            						{% else %}
-                                            							<option value="{{ele}}">{{ele}}</option>
-                                            						{% endif %}
-                                            					{% endfor %}
-                                    						</select>
-                                            			</div>
-                                            		</div>
-                                            		<div class="form-group">
-                                            			<label class="col-md-3 control-label">Change Application State to:</label>
-                                            			<div class="col-md-3">
-                                            				<select class="bs-select form-control" name="Application State">
-                                            					{% for ele in status_list %}
-                                            						{% if preface.application_state in ele %}
-                                            							<option value="{{ele}}" selected>{{ele}}</option>
-                                            						{% else %}
-                                            							<option value="{{ele}}">{{ele}}</option>
-                                            						{% endif %}
-                                            					{% endfor %}
-                                    						</select>
-                                            			</div>
-                                            			<label class="col-md-3 control-label">Current Application State:</label>
-                                            			<div class="col-md-3">
-                                            				<p class="form-control-static">{{preface.application_state}}</p>
-                                            			</div>
-                                            		</div>
-                                                </div>
-                                                <div class="form-actions">
-                                                    <div class="row">
-                                                        <div class="">
-                                                            <button type="submit" class="btn green-jungle" style="float:right;">Save</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                            <!-- END FORM PREFACE-->
-                                        </div>
-                                    </div>
-                                    <!-- END VALIDATION STATES-->
-                                    <!-- BEGIN TABFORMS -->
-                                    <div class="tabbable-line boxless tabbable-reversed">
-                                    	<ul class="nav nav-tabs">
-                                    		<li class="active">
-                                    			<a href="#tab_1" data-toggle="tab"> Information </a>
-                                    		</li>
-                                    		<li class="">
-                                    			<a href="#tab_2" data-toggle="tab"> Documents </a>
-                                    		</li>
-                                    		<li class="">
-                                    			<a href="#tab_3" data-toggle="tab"> Audit Trail </a>
-                                    		</li>
-                                    		<li class="">
-                                    			<a href="#tab_4" data-toggle="tab"> KYC and AML </a>
-                                    		</li>
-                                    		<li class="">
-                                    			<a href="#tab_5" data-toggle="tab"> Agreement </a>
-                                    		</li>
-                                    		<li class="">
-                                    			<a href="#tab_6" data-toggle="tab"> Setting </a>
-                                    		</li>
-                                    	</ul>
-                                    	
-                                    	<div class="tab-content">
-                                    		<!-- TAB 1 -->
-                                    		<div class="tab-pane active" id="tab_1">
-                                    			<div class="portlet box green-jungle">
-                                    				<div class="portlet-title">
-                                    					<div class="caption">
-                                    						Information
-                                    					</div>
-                                    				</div>
-                                    				<div class="portlet-body form">
-                                    					<!-- BEGIN FORM -->
-                                    					<form action="/ack_admin/?src=information" class="form-horizontal" method="post" enctype="multipart/form-data">
-                                    						{% csrf_token %}
-                                    						<div class="form-body">
-			                                            		<h4 class="form-section">Corporate</h4>
-			                                            		<div class="form-group">
-                                    								<label class="col-md-3 control-label">Company Name:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Company Name" value="{{information.company_name}}" type="text" class="form-control">
-			                                            			</div>
-			                                            			<label class="col-md-3 control-label">Established at:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Established at" value="{{information.established_at}}" type="text" class="form-control">
-			                                            			</div>
-			                                            		</div>
-			                                            		<div class="form-group">
-                                    								<label class="col-md-3 control-label">CR NO.:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="CR NO." value="{{information.CR_no}}" type="text" class="form-control">
-			                                            			</div>
-			                                            			<label class="col-md-3 control-label">Country:</label>
-			                                            			<div class="col-md-3">
-			                                            				<select class="bs-select form-control" name="Country">
-			                                            					{% for ele in information.country_list %}
-			                                            						{% if information.country in ele %}
-			                                            							<option value="{{ele}}" selected>{{ele}}</option>
-			                                            						{% else %}
-			                                            							<option value="{{ele}}">{{ele}}</option>
-			                                            						{% endif %}
-			                                            					{% endfor %}
-			                                    						</select>
-			                                            			</div>
-			                                            		</div>
-			                                            		<div class="form-group">
-                                    								<label class="col-md-3 control-label">Office Address:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Office Address" value="{{information.office_address}}" type="text" class="form-control">
-			                                            			</div>
-			                                            			<label class="col-md-3 control-label">Office Tel:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Office Tel" value="{{information.office_tel}}" type="text" class="form-control">
-			                                            			</div>
-			                                            		</div>
-			                                            		<h4 class="form-section">Personal: (individual, director for corporate)</h4>
-			                                            		<div class="form-group">
-                                    								<label class="col-md-3 control-label">Surname:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Surname" value="{{information.surname}}" type="text" class="form-control">
-			                                            			</div>
-			                                            			<label class="col-md-3 control-label">Given Name:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Given Name" value="{{information.given_name}}" type="text" class="form-control">
-			                                            			</div>
-			                                            		</div>
-			                                            		<div class="form-group">
-			                                            			<label class="col-md-3 control-label">Date of Birth:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Date of Birth" value="{{information.date_of_birth}}" type="text" class="form-control">
-			                                            			</div>
-			                                            		</div>
-			                                            		<div class="form-group">
-                                    								<label class="col-md-3 control-label">Email:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Email" value="{{information.email}}" type="text" class="form-control">
-			                                            			</div>
-			                                            			<label class="col-md-3 control-label">ID/Passport:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="HKID/Passport No." value="{{information.id_passport}}" type="text" class="form-control">
-			                                            			</div>
-			                                            		</div>
-			                                            		<div class="form-group">
-                                    								<label class="col-md-3 control-label">Gender:</label>
-			                                            			<div class="col-md-3">
-			                                            				<select class="bs-select form-control" name="Gender">
-			                                            					{% for ele in information.gender_list %}
-			                                            						{% if information.gender in ele %}
-			                                            							<option value="{{ele}}" selected>{{ele}}</option>
-			                                            						{% else %}
-			                                            							<option value="{{ele}}">{{ele}}</option>
-			                                            						{% endif %}
-			                                            					{% endfor %}
-			                                    						</select>
-			                                            			</div>
-			                                            			<label class="col-md-3 control-label">Occupation:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Occupation" value="{{information.occupation}}" type="text" class="form-control">
-			                                            			</div>
-			                                            		</div>
-			                                            		<div class="form-group">
-                                    								<label class="col-md-3 control-label">Nationality:</label>
-			                                            			<div class="col-md-3">
-			                                            				<select class="bs-select form-control" name="Nationality">
-			                                            					{% for ele in information.nationality_list %}
-			                                            						{% if information.nationality in ele %}
-			                                            							<option value="{{ele}}" selected>{{ele}}</option>
-			                                            						{% else %}
-			                                            							<option value="{{ele}}">{{ele}}</option>
-			                                            						{% endif %}
-			                                            					{% endfor %}
-			                                    						</select>
-			                                            			</div>
-			                                            			<label class="col-md-3 control-label">Mobile:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Mobile" value="{{information.mobile}}" type="text" class="form-control">
-			                                            			</div>
-			                                            		</div>
-			                                            		<div class="form-group">
-                                    								<label class="col-md-3 control-label">Home Tel:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Home Phone No." value="{{information.home_tel}}" type="text" class="form-control">
-			                                            			</div>
-			                                            			<label class="col-md-3 control-label">Home Address:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Residential Address" value="{{information.home_address}}" type="text" class="form-control">
-			                                            			</div>
-			                                            		</div>
-			                                            		<div class="form-group">
-                                    								<label class="col-md-3 control-label">Education Level:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Education Level" value="{{information.education_level}}" type="text" class="form-control">
-			                                            			</div>
-			                                            			<label class="col-md-3 control-label">Annual Income:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Annual Income" value="{{information.annual_income}}" type="text" class="form-control">
-			                                            			</div>
-			                                            		</div>
-			                                            		<div class="form-group">
-                                    								<label class="col-md-3 control-label">Type of Employment:</label>
-			                                            			<div class="col-md-3">
-			                                            				<select class="bs-select form-control" name="Type of Employment">
-			                                            					{% for ele in information.type_of_employment_list %}
-			                                            						{% if information.type_of_employment in ele %}
-			                                            							<option value="{{ele}}" selected>{{ele}}</option>
-			                                            						{% else %}
-			                                            							<option value="{{ele}}">{{ele}}</option>
-			                                            						{% endif %}
-			                                            					{% endfor %}
-			                                    						</select>
-			                                            			</div>
-			                                            			<label class="col-md-3 control-label">Company Name:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Company Name" value="{{information.company_name}}" type="text" class="form-control">
-			                                            			</div>
-			                                            		</div>
-			                                            		<div class="form-group">
-                                    								<label class="col-md-3 control-label">Office Address:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Office Address" value="{{information.office_address}}" type="text" class="form-control">
-			                                            			</div>
-			                                            			<label class="col-md-3 control-label">Office Tel:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Office Tel" value="{{information.office_tel}}" type="text" class="form-control">
-			                                            			</div>
-			                                            		</div>
-			                                            		<div class="form-group">
-                                    								<label class="col-md-3 control-label">Source of Fund:</label>
-			                                            			<div class="col-md-3">
-			                                            				<input name="Source of Fund" value="{{information.source_of_fund}}" type="text" class="form-control">
-			                                            			</div>
-			                                            		</div>
-			                                            		<div class="form-group">
-			                                            			<label class="col-md-1 control-label">Memo:</label>
-			                                            			<div class="col-md-5">
-			                                            				<p class="form-control-static">Content</p>
-			                                            			</div>
-			                                            			<div class="col-md-3">
-			                                            				<p class="form-control-static">Updated by</p>
-			                                            			</div>
-			                                            			<div class="col-md-3">
-			                                            				<p class="form-control-static">Time</p>
-			                                            			</div>
-			                                            		</div>
-			                                            		<div id="Memo_Part">
-			                                            			{% for memo in information.memos %}
-			                                            				<div class="form-group">
-					                                            			<label class="col-md-1 control-label">{{memo.no}}</label>
-					                                            			<div class="col-md-5">
-					                                            				<p class="form-control-static">{{memo.content}}</p>
-					                                            				
-					                                            			</div>
-					                                            			<div class="col-md-3">
-					                                            				<p class="form-control-static">{{memo.updated_by}}</p>
-					                                            			</div>
-					                                            			<div class="col-md-3">
-					                                            				<p class="form-control-static">{{memo.create_timestamp}}</p>
-					                                            			</div>
-					                                            		</div>
-			                                            			{% endfor %}
-			                                            		</div>
-			                                            		<button type="button" class="btn green-jungle" onclick="add_memo_handler();">Add Memo</button>
-                                    						</div>
-                                    						<div class="form-actions">
-			                                                    <div class="row">
-			                                                        <div class="">
-			                                                            <button type="submit" class="btn green-jungle" style="float:right;">Save</button>
-			                                                        </div>
-			                                                    </div>
-			                                                </div>
-                                    					</form>
-                                    					<!-- END FORM -->
-                                    				</div>
-                                    			</div>
-                                    		</div>
-                                    		<!-- TAB 2 -->
-                                    		<div class="tab-pane " id="tab_2">
-                                    			<div class="portlet box green-jungle">
-                                    				<div class="portlet-title">
-                                    					<div class="caption">
-                                    						Documents
-                                    					</div>
-                                    				</div>
-                                    				<div class="portlet-body form">
-                                    					<!-- BEGIN FORM -->
-                                    					<form action="/ack_admin/?src=documents" class="form-horizontal" method="post" enctype="multipart/form-data">
-                                    						{% csrf_token %}
-                                    						<div class="form-body">
-                                    							<div class="form-group">
-			                                                        <label class="col-md-4 control-label">Add Supporting Document:</label>
-		                                                        	<div class="col-md-4">
-				                                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-				                                                            <div class="input-group input-large">
-				                                                                <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
-				                                                                    <i class="fa fa-file fileinput-exists"></i>&nbsp;
-				                                                                    <span class="fileinput-filename"> </span>
-				                                                                </div>
-				                                                                <span class="input-group-addon btn default btn-file">
-				                                                                    <span class="fileinput-new"> Browse... </span>
-				                                                                    <span class="fileinput-exists"> Change </span>
-				                                                                    <input type="file" name="fileDoc" required /> </span>
-				                                                                <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
-				                                                            </div>
-				                                                        </div>
-				                                                    </div>
-				                                                    <div class="col-md-1"></div>
-				                                                    <div class="col-md-3">
-			                                            				<input name="fileName" type="text" placeholder="Name of Document" class="form-control" required />
-			                                            			</div>
-				                                                </div>
-                                    							{% for k, v in document.items %}
-                                    							<div class="form-group">
-                                    								<label class="col-md-4 control-label">{{k}}:</label>
-			                                            			<div class="col-md-4">
-			                                            				<p class="form-control-static"><a href="/file/{{v}}" target="_blank">View</a></p>
-			                                            			</div>
-			                                            		</div>
-			                                            		{% endfor %}
-                                    						</div>
-                                    						<div class="form-actions">
-			                                                    <div class="row">
-			                                                        <div class="col-md-offset-10 col-md-2">
-			                                                            <button type="submit" class="btn green-jungle">Upload</button>
-			                                                        </div>
-			                                                    </div>
-			                                                </div>
-                                    					</form>
-                                    					<!-- END FORM -->
-                                    				</div>
-                                    			</div>
-                                    		</div>
-                                    		<!-- TAB 3 -->
-                                    		<div class="tab-pane " id="tab_3">
-                                    			<div class="portlet box green-jungle">
-                                    				<div class="portlet-title">
-                                    					<div class="caption">
-                                    						Audit Trail
-                                    					</div>
-                                    				</div>
-                                    				<div class="portlet-body">
-                                    					<!-- BEGIN SAMPLE TABLE PORTLET -->
-                                    					<div class="table-scrollable">
-                                    						<table class="table table-hover" id="table1">
-                                    							<thead>
-                                    								<tr>
-                                    									<th> Date </th>
-                                    									<th> Description </th>
-                                    									<th> By </th>
-                                    								</tr>
-                                    							</thead>
-                                    						</table>
-                                    					</div>
-                                    					<!-- END SAMPLE TABLE PORTLET -->
-                                    				</div>
-                                    			</div>
-                                    		</div>
-                                    		<!-- TAB 4 -->
-                                    		<div class="tab-pane " id="tab_4">
-                                    			<div class="portlet box green-jungle">
-                                    				<div class="portlet-title">
-                                    					<div class="caption">
-                                    						Previous Application
-                                    					</div>
-                                    				</div>
-                                    				<div class="portlet-body form">
-                                    					<!-- BEGIN FORM -->
-                                    					<form action="javascript:;" class="form-horizontal">
-                                    						<div class="form-body">
-                                    							Coming soon
-                                    						</div>
-                                    					</form>
-                                    					<!-- END FORM -->
-                                    				</div>
-                                    			</div>
-                                    		</div>
-                                    		<!-- TAB 5 -->
-                                    		<div class="tab-pane " id="tab_5">
-                                    			<div class="portlet box green-jungle">
-                                    				<div class="portlet-title">
-                                    					<div class="caption">
-                                    						Agreement
-                                    					</div>
-                                    				</div>
-                                    				<div class="portlet-body form">
-                                    					<!-- BEGIN FORM -->
-                                    					<form action="javascript:;" class="form-horizontal">
-                                    						<div class="form-body">
-                                    							<div class="form-group">
-                                    								<label class="col-md-4 control-label" style="text-align:left;">Agreement:</label>
-			                                            			<div class="col-md-4">
-			                                            				<button class="btn green-jungle" onclick="printExternal('{{print_lender_agreement}}')">Print</button>
-			                                            			</div>
-			                                            		</div>
-			                                            		<div class="form-group">
-                                    								<label class="col-md-4 control-label" style="text-align:left;">PDPO:</label>
-			                                            			<div class="col-md-4">
-			                                            				<button class="btn green-jungle" onclick="printExternal('/personal_data_privacy_policy')">Print</button>
-			                                            			</div>
-			                                            		</div>
-                                    						</div>
-                                    					</form>
-                                    					<!-- END FORM -->
-                                    				</div>
-                                    			</div>
-                                    		</div>
-                                    		<!-- TAB 6 -->
-                                    		<div class="tab-pane " id="tab_6">
-                                    			<div class="portlet box green-jungle">
-                                    				<div class="portlet-title">
-                                    					<div class="caption">
-                                    						Setting
-                                    					</div>
-                                    				</div>
-                                    				<div class="portlet-body form">
-                                    					<!-- BEGIN FORM -->
-                                    					<form action="javascript:;" class="form-horizontal">
-                                    						<div class="form-body">
-                                    							{% for section, details in setting.items %}
-                                    							<h4 class="form-section">{{section}}</h4>
-                                    								{% for k, v in details.items %}
-		                                    							<div class="form-group">
-		                                    								<label class="col-md-4 control-label">{{k}}:</label>
-					                                            			<div class="col-md-4">
-					                                            				<p class="form-control-static">{{v}}</p>
-					                                            			</div>
-					                                            		</div>
-					                                            	{% endfor %}
-			                                            		{% endfor %}
-                                    						</div>
-                                    					</form>
-                                    					<!-- END FORM -->
-                                    				</div>
-                                    			</div>
-                                    		</div>
-                                    	</div>
-                                    </div>
-                                    <!-- END TABFORMS -->
-                                </div>
-                            </div>
-                        </div>
-                        <!-- END PAGE CONTENT INNER -->
-                    </div>
-                </div>
-                <!-- END PAGE CONTENT BODY -->
-                <!-- END CONTENT BODY -->
-            </div>
-            <!-- END CONTENT -->
-        </div>
-        <!-- END CONTAINER -->
-        <!-- BEGIN FOOTER -->
-        <div id="footer"></div>
-        <!-- END FOOTER -->
-        <!--[if lt IE 9]>
-<script src="../assets/global/plugins/respond.min.js"></script>
-<script src="../assets/global/plugins/excanvas.min.js"></script> 
-<![endif]-->
-        <!-- BEGIN CORE PLUGINS -->
-        <script src="{% static 'peerloan/global/plugins/jquery.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'peerloan/global/plugins/bootstrap/js/bootstrap.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'peerloan/global/plugins/js.cookie.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'peerloan/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'peerloan/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'peerloan/global/plugins/jquery.blockui.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'peerloan/global/plugins/uniform/jquery.uniform.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'peerloan/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js' %}" type="text/javascript"></script>
-        <!-- END CORE PLUGINS -->
-        <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <script src="{% static 'peerloan/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js' %}" type="text/javascript"></script>
-        <!-- END PAGE LEVEL PLUGINS -->
-        <!-- BEGIN THEME GLOBAL SCRIPTS -->
-        <script src="{% static 'peerloan/global/scripts/app.min.js' %}" type="text/javascript"></script>
-        <!-- END THEME GLOBAL SCRIPTS -->
-        <!-- BEGIN PAGE LEVEL SCRIPTS -->
-        <script src="{% static 'peerloan/pages/scripts/form-samples.min.js' %}" type="text/javascript"></script>
-        
-        <script src="{% static 'peerloan/global/scripts/datatable.js' %}" type="text/javascript"></script>
-        <script src="{% static 'peerloan/global/plugins/datatables/datatables.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'peerloan/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js' %}" type="text/javascript"></script>
-        <!-- END PAGE LEVEL SCRIPTS -->
-        <!-- BEGIN THEME LAYOUT SCRIPTS -->
-        <script src="{% static 'peerloan/layouts/layout3/scripts/layout.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'peerloan/layouts/layout3/scripts/demo.min.js' %}" type="text/javascript"></script>
-        <!-- END THEME LAYOUT SCRIPTS -->
-    </body>
-<script type="text/javascript" language="javascript" class="init">
-function printExternal(url) {
-    var printWindow = window.open( url, 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
-    printWindow.addEventListener('load', function(){
-        printWindow.print();
-    }, true);
-}
-
-function add_memo_handler() {
-	var numItems = $('#Memo_Part').children('.form-group').length;
-	$("#Memo_Part").append(
-		'<div class="form-group">'+
-			'<label class="col-md-1 control-label">'+(numItems+1)+'</label>'+
-			'<div class="col-md-5">'+
-				'<input name="memo_content[]" type="text" class="form-control">'+
-			'</div>'+
-			'<div class="col-md-3">'+
-				'<input name="memo_updated_by[]" type="text" class="form-control">'+
-			'</div>'+
-		'</div>'
-	);
-}
-
-$(document).ready(function() {
-	//var table = $('#ChecklistTable').DataTable();
-	
-	$('#submitChecklist').click( function() {
-		var checkboxes = document.querySelectorAll('input[type=checkbox]');
-		var checkbox_list = {};
-		for (var i = 0; i < checkboxes.length; i++) {
-			checkbox_list[checkboxes[i].name] = checkboxes[i].checked;
-		};
-		//console.log(checkbox_list);
-		var data = checkbox_list;
-		data['csrfmiddlewaretoken'] = '{{csrf_token}}';
-		$.ajax({
-			type: 'POST',
-			url: '/uor_handler/?action=checklist&uor_id={{ref_id}}',
-			data: data,
-			success: function(result){
-				//console.log(result);
-				alert(result);
-			},
-		});
-		
-	});
-});
-</script>
-<script type="text/javascript" language="javascript" class="init">
-
-function update_datatable(){
-    
-    var table = $('#table1').DataTable( {
-        "ajax": 
-        {   "url": "/admin_aut_list_json/?usr_id={{usr_id}}&ref_id={{ref_id}}&model={{model}}&type=Apply To Be Investor",
-        },
-        columns: [
-        { "data": 'date' },
-        { "data": 'description' },
-        { "data": 'by' },
-        ],
-    } );
-}
-
-$(document).ready(function() {
-      	update_datatable();
-});
-
-</script>
-</html>
+<!DOCTYPE html><!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]--><!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]--><!--[if !IE]><!--><html lang="en">    <!-- BEGIN HEAD -->    <head>        <meta charset="utf-8" />        <title>Peerloan</title>        <meta http-equiv="X-UA-Compatible" content="IE=edge">        <meta content="width=device-width, initial-scale=1" name="viewport" />        <meta content="" name="description" />        <meta content="" name="author" />        {% load staticfiles %}        {% load my_tags %}        <script src="//code.jquery.com/jquery-1.10.2.js"></script>        <script>		$(function(){		  $("#header").load("/header/{{cate}}/{{sub_cate}}", function(){Layout.init()});		  $("#footer").load("/footer"); 		});		</script>		<style>			.tabbable-line>.nav-tabs>li:hover, .tabbable-line>.nav-tabs>li.active {				border-bottom: 4px solid #26C281 !important;			}		</style>		        <!-- BEGIN GLOBAL MANDATORY STYLES -->        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />        <link href="{% static 'peerloan/global/plugins/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css" />        <link href="{% static 'peerloan/global/plugins/simple-line-icons/simple-line-icons.min.css' %}" rel="stylesheet" type="text/css" />        <link href="{% static 'peerloan/global/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />        <link href="{% static 'peerloan/global/plugins/uniform/css/uniform.default.css' %}" rel="stylesheet" type="text/css" />        <link href="{% static 'peerloan/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css' %}" rel="stylesheet" type="text/css" />        <!-- END GLOBAL MANDATORY STYLES -->        <!-- BEGIN PAGE LEVEL PLUGINS -->        <link href="{% static 'peerloan/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css' %}" rel="stylesheet" type="text/css" />                <link href="{% static 'peerloan/global/plugins/datatables/datatables.min.css' %}" rel="stylesheet" type="text/css" />        <link href="{% static 'peerloan/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css' %}" rel="stylesheet" type="text/css" />        <!-- END PAGE LEVEL PLUGINS -->        <!-- BEGIN THEME GLOBAL STYLES -->        <link href="{% static 'peerloan/global/css/components.min.css' %}" rel="stylesheet" id="style_components" type="text/css" />        <link href="{% static 'peerloan/global/css/plugins.min.css' %}" rel="stylesheet" type="text/css" />        <!-- END THEME GLOBAL STYLES -->        <!-- BEGIN THEME LAYOUT STYLES -->        <link href="{% static 'peerloan/layouts/layout3/css/layout.css' %}" rel="stylesheet" type="text/css" />        <link href="{% static 'peerloan/layouts/layout3/css/themes/default.min.css' %}" rel="stylesheet" type="text/css" id="style_color" />        <link href="{% static 'peerloan/layouts/layout3/css/custom.min.css' %}" rel="stylesheet" type="text/css" />        <!-- END THEME LAYOUT STYLES -->        <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />    </head>    <!-- END HEAD -->    <body class="page-container-bg-solid page-boxed">        <!-- BEGIN HEADER -->        <div id="header"></div>        <!-- END HEADER -->        <!-- BEGIN CONTAINER -->        <div class="page-container">            <!-- BEGIN CONTENT -->            <div class="page-content-wrapper">            	<!-- BEGIN PAGE HEAD-->                <div class="page-head">                    <div class="container">                        <!-- BEGIN PAGE TITLE -->                        <div class="page-title">                            <h1>{{title}}</h1>                        </div>                        <!-- END PAGE TITLE -->                    </div>                </div>                <!-- END PAGE HEAD-->                <!-- BEGIN CONTENT BODY -->                <!-- BEGIN PAGE CONTENT BODY -->                <div class="page-content">                    <div class="container">                        <!-- BEGIN PAGE CONTENT INNER -->                        <div class="page-content-inner">                            <div class="row">                                <div class="col-md-12">                                	<!-- BEGIN SAMPLE TABLE PORTLET-->                                    <div class="portlet box green-jungle">                                        <div class="portlet-title">                                            <div class="caption">                                                <span class="caption-subject font-white bold uppercase">Checklist</span>                                            </div>                                            <div class="tools">                                                <a href="javascript:;" class="expand"> </a>                                            </div>                                        </div>                                        <div class="portlet-body portlet-collapsed">                                            <div class="table-scrollable">                                                <table id="ChecklistTable" class="table table-hover">                                                    <thead>                                                        <tr>                                                        	<th> # </th>                                                            <th> Field </th>                                                            <th> User Input </th>                                                            <th> Doc Uploaded </th>                                                            <th> Confirm? </th>                                                        </tr>                                                    </thead>                                                    <tbody>                                                    	{% for num, vals in check_list.items %}	                                                        <tr>	                                                            <td rowspan="{{vals.rowspan}}"> {{num}} </td>	                                                            <td > {{vals.fields.items|access_list:0|access_list:0}} </td>	                                                            <td > {{vals.fields.items|access_list:0|access_list:1}} </td>	                                                            <td rowspan="{{vals.rowspan}}">	                                                            	<a href="/file/{{vals.fname}}" target="_blank">{{vals.doc}}</a>	                                                            </td>	                                                            <td rowspan="{{vals.rowspan}}">	                                                            	<div class="md-checkbox-inline">		                                                            	<div class="md-checkbox">		                                                            		{% if vals.confirm == 'T' %}				                                                            	<input type="checkbox" id="{{vals.doc}}" name="{{vals.doc}}" class="md-check" checked>				                                                            {% else %}				                                                            	<input type="checkbox" id="{{vals.doc}}" name="{{vals.doc}}" class="md-check">				                                                            {% endif %}				                                                            <label for="{{vals.doc}}">				                                                                <span></span>				                                                                <span class="check"></span>				                                                                <span class="box"></span> Confirm </label>				                                                        </div>				                                                    </div>	                                                            </td>	                                                        </tr>	                                                        {% for i in vals.fields.items|get_len|get_range %}	                                                        	{% if i != 0 %}	                                                        	<tr>		                                                            <td > {{vals.fields.items|access_list:i|access_list:0}} </td>		                                                            <td > {{vals.fields.items|access_list:i|access_list:1}}</td>		                                                        </tr>		                                                        {% endif %}	                                                        {% endfor %}                                                        {% endfor %}                                                    </tbody>                                                </table>                                            </div>                                            <div class="form-actions">	                                            <div class="row">	                                                <div class="col-md-offset-10 col-md-2">	                                                    <button type="button" id="submitChecklist" class="btn green-jungle">Save</button>	                                                </div>	                                            </div>	                                        </div>                                        </div>                                    </div>                                    <!-- END SAMPLE TABLE PORTLET-->									<!-- BEGIN VALIDATION STATES-->                                    <div class="portlet light portlet-fit portlet-form ">                                        <div class="portlet-body">                                            <!-- BEGIN FORM PREFACE-->                                            <form validate action="/ack_admin/?src=preface" class="form-horizontal form-bordered" method="post" enctype="multipart/form-data">                                            	{% csrf_token %}                                            	{% if require_tick_all_checklist %}                                            	<div class="alert alert-warning">	                                        		<strong>Message</strong>: Please tick all checklist before changing to APPROVED state.												</div>                                            	{% endif %}                                            	<div class="form-body">                                            		<h4 class="form-section">Application Basic Information</h4>                                            		<div class="form-group">                                            			<label class="col-md-3 control-label">Source of Fund:</label>                                            			<div class="col-md-3">                                            				<select class="bs-select form-control" name="Source of Fund">                                            					{% for ele in preface.source_of_fund_list %}                                            						{% if preface.source_of_fund in ele %}                                            							<option value="{{ele}}" selected>{{ele}}</option>                                            						{% else %}                                            							<option value="{{ele}}">{{ele}}</option>                                            						{% endif %}                                            					{% endfor %}                                    						</select>                                            			</div>                                            			<label class="col-md-3 control-label">Other Source of Fund:</label>                                            			<div class="col-md-3">                                            				<input name="Other Source of Fund" value="{{preface.other_source_of_fund}}" type="text" class="form-control">                                            				                                            			</div>                                            		</div>                                            		<div class="form-group">                                            			<label class="col-md-3 control-label">Account Type:</label>                                            			<div class="col-md-3">                                            				<select class="bs-select form-control" name="Account Type">                                            					{% for ele in preface.account_type_list %}                                            						{% if preface.account_type in ele %}                                            							<option value="{{ele}}" selected>{{ele}}</option>                                            						{% else %}                                            							<option value="{{ele}}">{{ele}}</option>                                            						{% endif %}                                            					{% endfor %}                                    						</select>                                            			</div>                                            		</div>                                            		<div class="form-group">                                            			<label class="col-md-3 control-label">Name:</label>                                            			<div class="col-md-3">                                            				<p class="form-control-static">{{preface.name}}</p>                                            			</div>                                            			<label class="col-md-3 control-label">Age:</label>                                            			<div class="col-md-3">                                            				<p class="form-control-static">{{preface.age}}</p>                                            			</div>                                            		</div>                                            		<div class="form-group">                                            			<label class="col-md-3 control-label">Occupation:</label>                                            			<div class="col-md-3">                                            				<p class="form-control-static">{{preface.occupation}}</p>                                            			</div>                                            			<label class="col-md-3 control-label">Professional Investor Type:</label>                                            			<div class="col-md-3">                                            				<select class="bs-select form-control" name="Customer Declaration">                                            					<option disabled selected value> None </option>                                            					{% for ele in preface.customer_declaration_list %}                                            						{% if preface.customer_declaration in ele %}                                            							<option value="{{ele}}" selected>{{ele}}</option>                                            						{% else %}                                            							<option value="{{ele}}">{{ele}}</option>                                            						{% endif %}                                            					{% endfor %}                                    						</select>                                            			</div>                                            		</div>                                            		<div class="form-group">                                            			<label class="col-md-3 control-label">Change Application State to:</label>                                            			<div class="col-md-3">                                            				<select class="bs-select form-control" name="Application State">                                            					{% for ele in status_list %}                                            						{% if preface.application_state in ele %}                                            							<option value="{{ele}}" selected>{{ele}}</option>                                            						{% else %}                                            							<option value="{{ele}}">{{ele}}</option>                                            						{% endif %}                                            					{% endfor %}                                    						</select>                                            			</div>                                            			<label class="col-md-3 control-label">Current Application State:</label>                                            			<div class="col-md-3">                                            				<p class="form-control-static">{{preface.application_state}}</p>                                            			</div>                                            		</div>                                                </div>                                                <div class="form-actions">                                                    <div class="row">                                                        <div class="">                                                            <button type="submit" class="btn green-jungle" style="float:right;">Save</button>                                                        </div>                                                    </div>                                                </div>                                            </form>                                            <!-- END FORM PREFACE-->                                        </div>                                    </div>                                    <!-- END VALIDATION STATES-->                                    <!-- BEGIN TABFORMS -->                                    <div class="tabbable-line boxless tabbable-reversed">                                    	<ul class="nav nav-tabs">                                    		<li class="active">                                    			<a href="#tab_1" data-toggle="tab"> Information </a>                                    		</li>                                    		<li class="">                                    			<a href="#tab_2" data-toggle="tab"> Documents </a>                                    		</li>                                    		<li class="">                                    			<a href="#tab_3" data-toggle="tab"> Audit Trail </a>                                    		</li>                                    		<li class="">                                    			<a href="#tab_4" data-toggle="tab"> KYC and AML </a>                                    		</li>                                    		<li class="">                                    			<a href="#tab_5" data-toggle="tab"> Agreement </a>                                    		</li>                                    		<li class="">                                    			<a href="#tab_6" data-toggle="tab"> Setting </a>                                    		</li>                                    	</ul>                                    	                                    	<div class="tab-content">                                    		<!-- TAB 1 -->                                    		<div class="tab-pane active" id="tab_1">                                    			<div class="portlet box green-jungle">                                    				<div class="portlet-title">                                    					<div class="caption">                                    						Information                                    					</div>                                    				</div>                                    				<div class="portlet-body form">                                    					<!-- BEGIN FORM -->                                    					<form action="/ack_admin/?src=information" class="form-horizontal" method="post" enctype="multipart/form-data">                                    						{% csrf_token %}                                    						<div class="form-body">			                                            		<h4 class="form-section">Corporate</h4>			                                            		<div class="form-group">                                    								<label class="col-md-3 control-label">Company Name:</label>			                                            			<div class="col-md-3">			                                            				<input name="Company Name" value="{{information.company_name}}" type="text" class="form-control">			                                            			</div>			                                            			<label class="col-md-3 control-label">Established at:</label>			                                            			<div class="col-md-3">			                                            				<input name="Established at" value="{{information.established_at}}" type="text" class="form-control">			                                            			</div>			                                            		</div>			                                            		<div class="form-group">                                    								<label class="col-md-3 control-label">CR NO.:</label>			                                            			<div class="col-md-3">			                                            				<input name="CR NO." value="{{information.CR_no}}" type="text" class="form-control">			                                            			</div>			                                            			<label class="col-md-3 control-label">Country:</label>			                                            			<div class="col-md-3">			                                            				<select class="bs-select form-control" name="Country">			                                            					{% for ele in information.country_list %}			                                            						{% if information.country in ele %}			                                            							<option value="{{ele}}" selected>{{ele}}</option>			                                            						{% else %}			                                            							<option value="{{ele}}">{{ele}}</option>			                                            						{% endif %}			                                            					{% endfor %}			                                    						</select>			                                            			</div>			                                            		</div>			                                            		<div class="form-group">                                    								<label class="col-md-3 control-label">Office Address:</label>			                                            			<div class="col-md-3">			                                            				<input name="Office Address" value="{{information.office_address}}" type="text" class="form-control">			                                            			</div>			                                            			<label class="col-md-3 control-label">Office Tel:</label>			                                            			<div class="col-md-3">			                                            				<input name="Office Tel" value="{{information.office_tel}}" type="text" class="form-control">			                                            			</div>			                                            		</div>			                                            		<h4 class="form-section">Personal: (individual, director for corporate)</h4>			                                            		<div class="form-group">                                    								<label class="col-md-3 control-label">Surname:</label>			                                            			<div class="col-md-3">			                                            				<input name="Surname" value="{{information.surname}}" type="text" class="form-control">			                                            			</div>			                                            			<label class="col-md-3 control-label">Given Name:</label>			                                            			<div class="col-md-3">			                                            				<input name="Given Name" value="{{information.given_name}}" type="text" class="form-control">			                                            			</div>			                                            		</div>			                                            		<div class="form-group">			                                            			<label class="col-md-3 control-label">Date of Birth:</label>			                                            			<div class="col-md-3">			                                            				<input name="Date of Birth" value="{{information.date_of_birth}}" type="text" class="form-control">			                                            			</div>			                                            		</div>			                                            		<div class="form-group">                                    								<label class="col-md-3 control-label">Email:</label>			                                            			<div class="col-md-3">			                                            				<input name="Email" value="{{information.email}}" type="text" class="form-control">			                                            			</div>			                                            			<label class="col-md-3 control-label">ID/Passport:</label>			                                            			<div class="col-md-3">			                                            				<input name="HKID/Passport No." value="{{information.id_passport}}" type="text" class="form-control">			                                            			</div>			                                            		</div>			                                            		<div class="form-group">                                    								<label class="col-md-3 control-label">Gender:</label>			                                            			<div class="col-md-3">			                                            				<select class="bs-select form-control" name="Gender">			                                            					{% for ele in information.gender_list %}			                                            						{% if information.gender in ele %}			                                            							<option value="{{ele}}" selected>{{ele}}</option>			                                            						{% else %}			                                            							<option value="{{ele}}">{{ele}}</option>			                                            						{% endif %}			                                            					{% endfor %}			                                    						</select>			                                            			</div>			                                            			<label class="col-md-3 control-label">Occupation:</label>			                                            			<div class="col-md-3">			                                            				<input name="Occupation" value="{{information.occupation}}" type="text" class="form-control">			                                            			</div>			                                            		</div>			                                            		<div class="form-group">                                    								<label class="col-md-3 control-label">Nationality:</label>			                                            			<div class="col-md-3">			                                            				<select class="bs-select form-control" name="Nationality">			                                            					{% for ele in information.nationality_list %}			                                            						{% if information.nationality in ele %}			                                            							<option value="{{ele}}" selected>{{ele}}</option>			                                            						{% else %}			                                            							<option value="{{ele}}">{{ele}}</option>			                                            						{% endif %}			                                            					{% endfor %}			                                    						</select>			                                            			</div>			                                            			<label class="col-md-3 control-label">Mobile:</label>			                                            			<div class="col-md-3">			                                            				<input name="Mobile" value="{{information.mobile}}" type="text" class="form-control">			                                            			</div>			                                            		</div>			                                            		<div class="form-group">                                    								<label class="col-md-3 control-label">Home Tel:</label>			                                            			<div class="col-md-3">			                                            				<input name="Home Phone No." value="{{information.home_tel}}" type="text" class="form-control">			                                            			</div>			                                            			<label class="col-md-3 control-label">Home Address:</label>			                                            			<div class="col-md-3">			                                            				<input name="Residential Address" value="{{information.home_address}}" type="text" class="form-control">			                                            			</div>			                                            		</div>			                                            		<div class="form-group">                                    								<label class="col-md-3 control-label">Education Level:</label>			                                            			<div class="col-md-3">			                                            				<input name="Education Level" value="{{information.education_level}}" type="text" class="form-control">			                                            			</div>			                                            			<label class="col-md-3 control-label">Annual Income:</label>			                                            			<div class="col-md-3">			                                            				<input name="Annual Income" value="{{information.annual_income}}" type="text" class="form-control">			                                            			</div>			                                            		</div>			                                            		<div class="form-group">                                    								<label class="col-md-3 control-label">Type of Employment:</label>			                                            			<div class="col-md-3">			                                            				<select class="bs-select form-control" name="Type of Employment">			                                            					{% for ele in information.type_of_employment_list %}			                                            						{% if information.type_of_employment in ele %}			                                            							<option value="{{ele}}" selected>{{ele}}</option>			                                            						{% else %}			                                            							<option value="{{ele}}">{{ele}}</option>			                                            						{% endif %}			                                            					{% endfor %}			                                    						</select>			                                            			</div>			                                            			<label class="col-md-3 control-label">Company Name:</label>			                                            			<div class="col-md-3">			                                            				<input name="Company Name" value="{{information.company_name}}" type="text" class="form-control">			                                            			</div>			                                            		</div>			                                            		<div class="form-group">                                    								<label class="col-md-3 control-label">Office Address:</label>			                                            			<div class="col-md-3">			                                            				<input name="Office Address" value="{{information.office_address}}" type="text" class="form-control">			                                            			</div>			                                            			<label class="col-md-3 control-label">Office Tel:</label>			                                            			<div class="col-md-3">			                                            				<input name="Office Tel" value="{{information.office_tel}}" type="text" class="form-control">			                                            			</div>			                                            		</div>			                                            		<div class="form-group">                                    								<label class="col-md-3 control-label">Source of Fund:</label>			                                            			<div class="col-md-3">			                                            				<input name="Source of Fund" value="{{information.source_of_fund}}" type="text" class="form-control">			                                            			</div>			                                            		</div>			                                            		<div class="form-group">			                                            			<label class="col-md-1 control-label">Memo:</label>			                                            			<div class="col-md-5">			                                            				<p class="form-control-static">Content</p>			                                            			</div>			                                            			<div class="col-md-3">			                                            				<p class="form-control-static">Updated by</p>			                                            			</div>			                                            			<div class="col-md-3">			                                            				<p class="form-control-static">Time</p>			                                            			</div>			                                            		</div>			                                            		<div id="Memo_Part">			                                            			{% for memo in information.memos %}			                                            				<div class="form-group">					                                            			<label class="col-md-1 control-label">{{memo.no}}</label>					                                            			<div class="col-md-5">					                                            				<p class="form-control-static">{{memo.content}}</p>					                                            									                                            			</div>					                                            			<div class="col-md-3">					                                            				<p class="form-control-static">{{memo.updated_by}}</p>					                                            			</div>					                                            			<div class="col-md-3">					                                            				<p class="form-control-static">{{memo.create_timestamp}}</p>					                                            			</div>					                                            		</div>			                                            			{% endfor %}			                                            		</div>			                                            		<button type="button" class="btn green-jungle" onclick="add_memo_handler();">Add Memo</button>                                    						</div>                                    						<div class="form-actions">			                                                    <div class="row">			                                                        <div class="">			                                                            <button type="submit" class="btn green-jungle" style="float:right;">Save</button>			                                                        </div>			                                                    </div>			                                                </div>                                    					</form>                                    					<!-- END FORM -->                                    				</div>                                    			</div>                                    		</div>                                    		<!-- TAB 2 -->                                    		<div class="tab-pane " id="tab_2">                                    			<div class="portlet box green-jungle">                                    				<div class="portlet-title">                                    					<div class="caption">                                    						Documents                                    					</div>                                    				</div>                                    				<div class="portlet-body form">                                    					<!-- BEGIN FORM -->                                    					<form action="/ack_admin/?src=documents" class="form-horizontal" method="post" enctype="multipart/form-data">                                    						{% csrf_token %}                                    						<div class="form-body">                                    							<div class="form-group">			                                                        <label class="col-md-4 control-label">Add Supporting Document:</label>		                                                        	<div class="col-md-4">				                                                        <div class="fileinput fileinput-new" data-provides="fileinput">				                                                            <div class="input-group input-large">				                                                                <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">				                                                                    <i class="fa fa-file fileinput-exists"></i>&nbsp;				                                                                    <span class="fileinput-filename"> </span>				                                                                </div>				                                                                <span class="input-group-addon btn default btn-file">				                                                                    <span class="fileinput-new"> Browse... </span>				                                                                    <span class="fileinput-exists"> Change </span>				                                                                    <input type="file" name="fileDoc" required /> </span>				                                                                <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>				                                                            </div>				                                                        </div>				                                                    </div>				                                                    <div class="col-md-1"></div>				                                                    <div class="col-md-3">			                                            				<input name="fileName" type="text" placeholder="Name of Document" class="form-control" required />			                                            			</div>				                                                </div>                                    							{% for k, v in document.items %}                                    							<div class="form-group">                                    								<label class="col-md-4 control-label">{{k}}:</label>			                                            			<div class="col-md-4">			                                            				<p class="form-control-static"><a href="/file/{{v}}" target="_blank">View</a></p>			                                            			</div>			                                            		</div>			                                            		{% endfor %}                                    						</div>                                    						<div class="form-actions">			                                                    <div class="row">			                                                        <div class="col-md-offset-10 col-md-2">			                                                            <button type="submit" class="btn green-jungle">Upload</button>			                                                        </div>			                                                    </div>			                                                </div>                                    					</form>                                    					<!-- END FORM -->                                    				</div>                                    			</div>                                    		</div>                                    		<!-- TAB 3 -->                                    		<div class="tab-pane " id="tab_3">                                    			<div class="portlet box green-jungle">                                    				<div class="portlet-title">                                    					<div class="caption">                                    						Audit Trail                                    					</div>                                    				</div>                                    				<div class="portlet-body">                                    					<!-- BEGIN SAMPLE TABLE PORTLET -->                                    					<div class="table-scrollable">                                    						<table class="table table-hover" id="table1">                                    							<thead>                                    								<tr>                                    									<th> Date </th>                                    									<th> Description </th>                                    									<th> By </th>                                    								</tr>                                    							</thead>                                    						</table>                                    					</div>                                    					<!-- END SAMPLE TABLE PORTLET -->                                    				</div>                                    			</div>                                    		</div>                                    		<!-- TAB 4 -->                                    		<div class="tab-pane " id="tab_4">                                    			<div class="portlet box green-jungle">                                    				<div class="portlet-title">                                    					<div class="caption">                                    						Previous Application                                    					</div>                                    				</div>                                    				<div class="portlet-body form">                                    					<!-- BEGIN FORM -->                                    					<form action="javascript:;" class="form-horizontal">                                    						<div class="form-body">                                    							Coming soon                                    						</div>                                    					</form>                                    					<!-- END FORM -->                                    				</div>                                    			</div>                                    		</div>                                    		<!-- TAB 5 -->                                    		<div class="tab-pane " id="tab_5">                                    			<div class="portlet box green-jungle">                                    				<div class="portlet-title">                                    					<div class="caption">                                    						Agreement                                    					</div>                                    				</div>                                    				<div class="portlet-body form">                                    					<!-- BEGIN FORM -->                                    					<form action="javascript:;" class="form-horizontal">                                    						<div class="form-body">                                    							<div class="form-group">                                    								<label class="col-md-4 control-label" style="text-align:left;">Agreement:</label>			                                            			<div class="col-md-4">			                                            				<button class="btn green-jungle" onclick="printExternal('{{print_lender_agreement}}')">Print</button>			                                            			</div>			                                            		</div>			                                            		<div class="form-group">                                    								<label class="col-md-4 control-label" style="text-align:left;">PDPO:</label>			                                            			<div class="col-md-4">			                                            				<button class="btn green-jungle" onclick="printExternal('/personal_data_privacy_policy')">Print</button>			                                            			</div>			                                            		</div>                                    						</div>                                    					</form>                                    					<!-- END FORM -->                                    				</div>                                    			</div>                                    		</div>                                    		<!-- TAB 6 -->                                    		<div class="tab-pane " id="tab_6">                                    			<div class="portlet box green-jungle">                                    				<div class="portlet-title">                                    					<div class="caption">                                    						Setting                                    					</div>                                    				</div>                                    				<div class="portlet-body form">                                    					<!-- BEGIN FORM -->                                    					<form action="javascript:;" class="form-horizontal">                                    						<div class="form-body">                                    							{% for section, details in setting.items %}                                    							<h4 class="form-section">{{section}}</h4>                                    								{% for k, v in details.items %}		                                    							<div class="form-group">		                                    								<label class="col-md-4 control-label">{{k}}:</label>					                                            			<div class="col-md-4">					                                            				<p class="form-control-static">{{v}}</p>					                                            			</div>					                                            		</div>					                                            	{% endfor %}			                                            		{% endfor %}                                    						</div>                                    					</form>                                    					<!-- END FORM -->                                    				</div>                                    			</div>                                    		</div>                                    	</div>                                    </div>                                    <!-- END TABFORMS -->                                </div>                            </div>                        </div>                        <!-- END PAGE CONTENT INNER -->                    </div>                </div>                <!-- END PAGE CONTENT BODY -->                <!-- END CONTENT BODY -->            </div>            <!-- END CONTENT -->        </div>        <!-- END CONTAINER -->        <!-- BEGIN FOOTER -->        <div id="footer"></div>        <!-- END FOOTER -->        <!--[if lt IE 9]><script src="../assets/global/plugins/respond.min.js"></script><script src="../assets/global/plugins/excanvas.min.js"></script> <![endif]-->        <!-- BEGIN CORE PLUGINS -->        <script src="{% static 'peerloan/global/plugins/jquery.min.js' %}" type="text/javascript"></script>        <script src="{% static 'peerloan/global/plugins/bootstrap/js/bootstrap.min.js' %}" type="text/javascript"></script>        <script src="{% static 'peerloan/global/plugins/js.cookie.min.js' %}" type="text/javascript"></script>        <script src="{% static 'peerloan/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js' %}" type="text/javascript"></script>        <script src="{% static 'peerloan/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js' %}" type="text/javascript"></script>        <script src="{% static 'peerloan/global/plugins/jquery.blockui.min.js' %}" type="text/javascript"></script>        <script src="{% static 'peerloan/global/plugins/uniform/jquery.uniform.min.js' %}" type="text/javascript"></script>        <script src="{% static 'peerloan/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js' %}" type="text/javascript"></script>        <!-- END CORE PLUGINS -->        <!-- BEGIN PAGE LEVEL PLUGINS -->        <script src="{% static 'peerloan/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js' %}" type="text/javascript"></script>        <!-- END PAGE LEVEL PLUGINS -->        <!-- BEGIN THEME GLOBAL SCRIPTS -->        <script src="{% static 'peerloan/global/scripts/app.min.js' %}" type="text/javascript"></script>        <!-- END THEME GLOBAL SCRIPTS -->        <!-- BEGIN PAGE LEVEL SCRIPTS -->        <script src="{% static 'peerloan/pages/scripts/form-samples.min.js' %}" type="text/javascript"></script>                <script src="{% static 'peerloan/global/scripts/datatable.js' %}" type="text/javascript"></script>        <script src="{% static 'peerloan/global/plugins/datatables/datatables.min.js' %}" type="text/javascript"></script>        <script src="{% static 'peerloan/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js' %}" type="text/javascript"></script>        <!-- END PAGE LEVEL SCRIPTS -->        <!-- BEGIN THEME LAYOUT SCRIPTS -->        <script src="{% static 'peerloan/layouts/layout3/scripts/layout.min.js' %}" type="text/javascript"></script>        <script src="{% static 'peerloan/layouts/layout3/scripts/demo.min.js' %}" type="text/javascript"></script>        <!-- END THEME LAYOUT SCRIPTS -->    </body><script type="text/javascript" language="javascript" class="init">function printExternal(url) {    var printWindow = window.open( url, 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');    printWindow.addEventListener('load', function(){        printWindow.print();    }, true);}function add_memo_handler() {	var numItems = $('#Memo_Part').children('.form-group').length;	$("#Memo_Part").append(		'<div class="form-group">'+			'<label class="col-md-1 control-label">'+(numItems+1)+'</label>'+			'<div class="col-md-5">'+				'<input name="memo_content[]" type="text" class="form-control">'+			'</div>'+			'<div class="col-md-3">'+				'<input name="memo_updated_by[]" type="text" class="form-control">'+			'</div>'+		'</div>'	);}$(document).ready(function() {	//var table = $('#ChecklistTable').DataTable();		$('#submitChecklist').click( function() {		var checkboxes = document.querySelectorAll('input[type=checkbox]');		var checkbox_list = {};		for (var i = 0; i < checkboxes.length; i++) {			checkbox_list[checkboxes[i].name] = checkboxes[i].checked;		};		//console.log(checkbox_list);		var data = checkbox_list;		data['csrfmiddlewaretoken'] = '{{csrf_token}}';		$.ajax({			type: 'POST',			url: '/uor_handler/?action=checklist&uor_id={{ref_id}}',			data: data,			success: function(result){				//console.log(result);				alert(result);			},		});			});});</script><script type="text/javascript" language="javascript" class="init">function update_datatable(){        var table = $('#table1').DataTable( {        "ajax":         {   "url": "/admin_aut_list_json/?usr_id={{usr_id}}&ref_id={{ref_id}}&model={{model}}&type=Apply To Be Investor",        },        columns: [        { "data": 'date' },        { "data": 'description' },        { "data": 'by' },        ],    } );}$(document).ready(function() {      	update_datatable();});</script></html>

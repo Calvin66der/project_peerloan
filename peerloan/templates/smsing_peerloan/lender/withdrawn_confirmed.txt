@@ -1,0 +1,1 @@
+Zwap:Your requested withdrawal have been deposit to your bank account at {{datetime}} by cheque.

@@ -1,0 +1,1 @@
+Dear User,We are sending you this email because we have received a request to sign lender agreement in our platform.Please input the following OTP code to continue the progress.OTP Code: {{OTP_code}}Sincerely,Zwap Team

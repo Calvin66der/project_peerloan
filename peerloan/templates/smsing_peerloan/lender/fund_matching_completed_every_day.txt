@@ -1,0 +1,1 @@
+Zwap: HK${{amount}} of your Zwap's account have been matched at {{today_date}}, fund matched with {{num_of_loans}} loans,  please login www.zwap.hk/login  for details.
