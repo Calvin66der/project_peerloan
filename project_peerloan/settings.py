@@ -30,10 +30,8 @@ ALLOWED_HOSTS = ['*']
 
 # security setting
 #SECURE_SSL_REDIRECT = True
-
 # set maintenance mode
 # MAINTENANCE_MODE = False
-
 # Application definition
 
 INSTALLED_APPS = (
