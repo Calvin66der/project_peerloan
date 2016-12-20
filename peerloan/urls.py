@@ -115,6 +115,7 @@ urlpatterns = [
     url(r'^admin_account_list_json/$', admin_list_json.account_list_json.as_view()),
     url(r'^admin_ledger_list_json/$', admin_list_json.ledger_list_json.as_view()),
     url(r'^admin_aut_list_json/$', admin_list_json.aut_list_json.as_view()),
+    url(r'^admin_ph_list_json/$', admin_list_json.ph_list_json.as_view()),
 
     # json data url
     url(r'^loan_list_json/$', list_json.loan_list_json.as_view(), name='loan_list_json'),
